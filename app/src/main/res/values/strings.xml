@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Quick Money Counter</string>
+
+    <string name="button_reset">Reset</string>
+    <string name="no_money">0.00</string>
+    <string name="title_common">Common</string>
+    <string name="title_uncommon">Uncommon</string>
+    <string name="title_coin">Coins</string>
+    <string name="title_paper">Paper</string>
 </resources>
