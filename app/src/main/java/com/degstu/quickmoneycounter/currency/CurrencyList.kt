@@ -8,9 +8,9 @@ class CurrencyList {
         Currency:
             name
             master symbol
-            paper array common
-            paper array uncommon
-            coins
+            MP array common
+            MP array uncommon
+            MP array coins
 
          */
 
@@ -21,79 +21,64 @@ class CurrencyList {
             "US Dollar",
             "$",
             arrayOf(
-                Paper(
+                MoneyPiece(
                     "USDPaper1",
-                    1,
-                    "$",
-                    true
+                    1.0,
+                    "$1"
                 ),
-                Paper(
+                MoneyPiece(
                     "USDPaper5",
-                    5,
-                    "$",
-                    true
+                    5.0,
+                    "$5"
                 ),
-                Paper(
+                MoneyPiece(
                     "USDPaper10",
-                    10,
-                    "$",
-                    true
+                    10.0,
+                    "$10"
                 ),
-                Paper(
+                MoneyPiece(
                     "USDPaper20",
-                    20,
-                    "$",
-                    true
+                    20.0,
+                    "$50"
                 )
             ),
             arrayOf(
-                Paper(
+                MoneyPiece(
                     "USDPaper2",
-                    2,
-                    "$",
-                    true
+                    2.0,
+                    "$2"
                 ),
-                Paper(
+                MoneyPiece(
                     "USDPaper50",
-                    50,
-                    "$",
-                    true
+                    50.0,
+                    "$50"
                 ),
-                Paper(
+                MoneyPiece(
                     "USDPaper100",
-                    100,
-                    "$",
-                    true
+                    100.0,
+                    "$100"
                 )
             ),
             arrayOf(
-                Coin(
+                MoneyPiece(
                     "USDCoin1",
                     0.01,
-                    "\u00A2",
-                    "Penny",
-                    false
+                    "1\u00A2"
                 ),
-                Coin(
+                MoneyPiece(
                     "USDCoin5",
                     0.05,
-                    "\u00A2",
-                    "Nickle",
-                    false
+                    "5\u00A2"
                 ),
-                Coin(
+                MoneyPiece(
                     "USDCoin10",
                     0.1,
-                    "\u00A2",
-                    "Dime",
-                    false
+                    "10\u00A2"
                 ),
-                Coin(
+                MoneyPiece(
                     "USDCoin25",
                     0.25,
-                    "\u00A2",
-                    "Quarter",
-                    false
+                    "25\u00A2"
                 )
             )
         )

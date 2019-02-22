@@ -3,7 +3,8 @@ package com.degstu.quickmoneycounter.settings
 class Settings {
     companion object {
         val list: Array<Setting> = arrayOf(
-            Setting("activeCurrency", "USD")
+            Setting("activeCurrency", "USD"),
+            Setting("mode", "basic")
         )
 
         fun getSetting(name: String): Setting? {

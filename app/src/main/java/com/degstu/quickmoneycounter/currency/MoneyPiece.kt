@@ -6,8 +6,7 @@ import android.content.SharedPreferences
 open class MoneyPiece(
     val uniqueIdentifier: String,
     val numericValue: Double,
-    val symbol: String,
-    val symbolFirst: Boolean = true,
+    val display: String,
     var count: Int = 0
 ) {
     companion object {
