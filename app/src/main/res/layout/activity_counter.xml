@@ -37,5 +37,72 @@
             app:layout_constraintTop_toBottomOf="@+id/layoutBasicTop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/scrollView">
+        <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" app:layout_constraintTop_toTopOf="parent"
+                    android:id="@+id/layoutPaperCommon">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/labelPaperCommon"
+                        app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/title_paper_common" android:textSize="24sp"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/labelPaperCommon"
+                        android:id="@+id/layoutPaperCommonButtons">
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/layoutPaperUncommon"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutPaperCommon"
+            >
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/labelPaperUncommon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginTop="8dp" android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                        app:layout_constraintEnd_toEndOf="parent" tools:text="@string/title_paper_uncommon"
+                        android:textSize="24sp"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@+id/labelPaperUncommon"
+                        android:id="@+id/layoutPaperUncommonButtons">
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+            <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/layoutCoins"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutPaperUncommon"
+            >
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:id="@+id/labelCoins"
+                        tools:text="@string/title_coin" android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"/>
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" android:id="@+id/layoutCoinsButtons"
+                        app:layout_constraintTop_toBottomOf="@+id/labelCoins" android:layout_marginTop="8dp">
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+        </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

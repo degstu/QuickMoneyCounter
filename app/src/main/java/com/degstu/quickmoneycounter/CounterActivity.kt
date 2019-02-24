@@ -31,17 +31,24 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun reset() {
+        //load default
         currency = CurrencyList().getCurrency(Settings.getSetting("activeCurrency")!!.loadValue(this))
+        //write
         currency.write(this)
 
+        //load from write
         load()
     }
 
     private fun load() {
+        //load active currency
         currency = CurrencyList().getCurrency(Settings.getSetting("activeCurrency")!!.loadValue(this))
         currency.load(this)
+
+        //load mode (not currently in use)
         mode = Settings.getSetting("mode")!!.loadValue(this)
 
+        //run calc to set the sum label
         calc()
     }
 

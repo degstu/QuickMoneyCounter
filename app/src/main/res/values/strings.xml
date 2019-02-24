@@ -3,8 +3,7 @@
 
     <string name="button_reset">Reset</string>
     <string name="no_money">0.00</string>
-    <string name="title_common">Common</string>
-    <string name="title_uncommon">Uncommon</string>
+    <string name="title_paper_common">Paper Common</string>
+    <string name="title_paper_uncommon">Paper Uncommon</string>
     <string name="title_coin">Coins</string>
-    <string name="title_paper">Paper</string>
 </resources>
