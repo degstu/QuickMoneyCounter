@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Quick Money Counter</string>
+    <string name="app_name">QMC</string>
 
     <string name="button_reset">Reset</string>
     <string name="no_money">0.00</string>

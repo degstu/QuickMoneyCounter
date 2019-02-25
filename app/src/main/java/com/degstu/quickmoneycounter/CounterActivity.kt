@@ -38,6 +38,9 @@ class CounterActivity : AppCompatActivity() {
 
         //load from write
         load()
+
+        //TODO: confirm on reset
+        //TODO: fix load, layout
     }
 
     private fun load() {
@@ -48,17 +51,30 @@ class CounterActivity : AppCompatActivity() {
         //load mode (not currently in use)
         mode = Settings.getSetting("mode")!!.loadValue(this)
 
-        //run calc to set the sum label
+        //run calc to set the sum label to 0.00
         calc()
     }
 
     private fun constructUI() {
-        //TODO: this
+        for (m: MoneyPiece in currency.paperCommon) {
+            addButton(m, layoutPaperCommonButtons)
+        }
+        for (m: MoneyPiece in currency.paperUncommon) {
+            addButton(m, layoutPaperUncommonButtons)
+        }
+        for (m: MoneyPiece in currency.coins) {
+            addButton(m, layoutCoinsButtons)
+        }
     }
 
-    private fun addButton(moneyPiece: MoneyPiece, layout: LinearLayout){
+    private fun addButton(m: MoneyPiece, l: LinearLayout) {
         val b: Button = Button(this)
-        //TODO: add button to layout
-        //TODO: UNIT TESTS!!!!
+        b.text = m.display
+        b.setOnClickListener {
+            currency.increment(m.uniqueIdentifier)
+            calc()
+        }
+
+        l.addView(b)
     }
 }
