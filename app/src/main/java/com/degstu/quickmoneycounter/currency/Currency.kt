@@ -1,6 +1,7 @@
 package com.degstu.quickmoneycounter.currency
 
 import android.content.Context
+import android.content.SharedPreferences
 
 class Currency(
     val uniqueIdentifier: String,
@@ -15,6 +16,7 @@ class Currency(
     }
 
     private var opList: MutableList<String> = mutableListOf()
+    private val OP_LIST_PREF_NAME: String = uniqueIdentifier + "_OPLIST"
 
     fun sum(): Double {
         var sum: Double = 0.0
@@ -50,12 +52,22 @@ class Currency(
         for (i in paperCommon.indices) paperCommon[i].loadValue(context)
         for (i in paperUncommon.indices) paperUncommon[i].loadValue(context)
         for (i in coins.indices) coins[i].loadValue(context)
+
+        //operation list
+        val pref: SharedPreferences = context.getSharedPreferences(MoneyPiece.PREF_FILE_MONEY, Context.MODE_PRIVATE)
+        opList = pref.getString(OP_LIST_PREF_NAME, "")!!.split("|").toMutableList()
     }
 
     fun write(context: Context) {
         for (i in paperCommon.indices) paperCommon[i].writeValue(context)
         for (i in paperUncommon.indices) paperUncommon[i].writeValue(context)
         for (i in coins.indices) coins[i].writeValue(context)
+
+        //operation list
+        val pref: SharedPreferences.Editor =
+            context.getSharedPreferences(MoneyPiece.PREF_FILE_MONEY, Context.MODE_PRIVATE).edit()
+        pref.putString(OP_LIST_PREF_NAME, opList.joinToString("|"))
+        pref.apply()
     }
 
     fun increment(uniqueIdentifier: String, add: Boolean = true) {
