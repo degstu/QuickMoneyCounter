@@ -39,7 +39,7 @@ class CurrencyList {
                 MoneyPiece(
                     "USDPaper20",
                     20.0,
-                    "$50"
+                    "$20"
                 )
             ),
             arrayOf(

@@ -8,7 +8,7 @@ class Setting(val uniqueIdentifier: String, val default: String) {
         const val PREF_FILE_CONFIG = "config"
     }
 
-    var value: String = default
+    private var value: String = default
 
     fun loadValue(context: Context): String {
         val pref: SharedPreferences = context.getSharedPreferences(PREF_FILE_CONFIG, Context.MODE_PRIVATE)

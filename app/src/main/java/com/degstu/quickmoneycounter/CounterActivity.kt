@@ -1,9 +1,12 @@
 package com.degstu.quickmoneycounter
 
+import android.content.DialogInterface
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.degstu.quickmoneycounter.currency.Currency
 import com.degstu.quickmoneycounter.currency.CurrencyList
 import com.degstu.quickmoneycounter.currency.MoneyPiece
@@ -20,6 +23,7 @@ class CounterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_counter)
 
         buttonReset.setOnClickListener { reset() }
+        buttonUndo.setOnClickListener { undo() }
 
         load()
         constructUI()
@@ -31,16 +35,47 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun reset() {
-        //load default
-        currency = CurrencyList().getCurrency(Settings.getSetting("activeCurrency")!!.loadValue(this))
-        //write
-        currency.write(this)
+        fun r() {
+            //load default
+            currency = CurrencyList().getCurrency(Settings.getSetting("activeCurrency")!!.loadValue(this))
+            //write
+            currency.write(this)
 
-        //load from write
-        load()
+            //load from write
+            load()
+        }
 
-        //TODO: confirm on reset
-        //TODO: fix load, layout
+        if (currency.sumOps() >= Currency.RESET_CONFIRM_OPS_COUNT) {
+            val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+            builder.setTitle(R.string.confirm_reset_title)
+            builder.setMessage(R.string.confirm_reset_message)
+
+            val click = DialogInterface.OnClickListener { _, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> r()
+                    DialogInterface.BUTTON_NEGATIVE -> toast(resources.getString(R.string.confirm_reset_cancelled))
+                }
+            }
+
+            builder.setPositiveButton(R.string.button_yes, click)
+            builder.setNegativeButton(R.string.button_no, click)
+
+            builder.create().show()
+        } else {
+            r()
+        }
+    }
+
+    private fun undo() {
+        val undo: String = currency.undo()
+
+        if (undo != "") {
+            toast(resources.getString(R.string.undo_success) + " " + undo)
+        } else {
+            toast(resources.getString(R.string.undo_fail))
+        }
+
+        calc()
     }
 
     private fun load() {
@@ -73,8 +108,13 @@ class CounterActivity : AppCompatActivity() {
         b.setOnClickListener {
             currency.increment(m.uniqueIdentifier)
             calc()
+            currency.write(this)
         }
 
         l.addView(b)
+    }
+
+    private fun toast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

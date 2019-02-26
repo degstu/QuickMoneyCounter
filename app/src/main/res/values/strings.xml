@@ -1,9 +1,20 @@
 <resources>
     <string name="app_name">QMC</string>
 
-    <string name="button_reset">Reset</string>
+    <string name="button_yes">Yes</string>
+    <string name="button_no">No</string>
+
     <string name="no_money">0.00</string>
     <string name="title_paper_common">Paper Common</string>
     <string name="title_paper_uncommon">Paper Uncommon</string>
     <string name="title_coin">Coins</string>
+
+    <string name="button_reset">Reset</string>
+    <string name="confirm_reset_title">Confirm Reset</string>
+    <string name="confirm_reset_message">Are you sure you would like to reset the count?</string>
+    <string name="confirm_reset_cancelled">Reset cancelled</string>
+
+    <string name="button_undo">Undo</string>
+    <string name="undo_success">Undone</string>
+    <string name="undo_fail">Nothing to undo!</string>
 </resources>
