@@ -20,7 +20,7 @@ import java.text.DecimalFormat
 
 class CounterActivity : AppCompatActivity() {
     private var currency: Currency = Currency("ERR", "ERR", "ERR", arrayOf(), arrayOf(), arrayOf())
-    private var mode: String = "basic"
+    private var mode: String = Settings.Modes.BASIC.value
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +64,9 @@ class CounterActivity : AppCompatActivity() {
             load()
         }
 
-        if (currency.sumOps() >= Currency.RESET_CONFIRM_OPS_COUNT) {
+        if (currency.sumOps() >= Currency.RESET_CONFIRM_OPS_COUNT
+            && Settings.getSetting("confirmReset")!!.loadValue(this) != "false"
+        ) {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
             builder.setTitle(R.string.confirm_reset_title)
             builder.setMessage(R.string.confirm_reset_message)
@@ -135,7 +137,7 @@ class CounterActivity : AppCompatActivity() {
                 l.addView(currentLayout)
             }
 
-            if (mode == "basic") {
+            if (mode == Settings.Modes.BASIC.value) {
                 newRow()
 
                 for (i in c.indices) {

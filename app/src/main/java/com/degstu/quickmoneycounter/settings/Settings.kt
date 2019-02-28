@@ -1,10 +1,16 @@
 package com.degstu.quickmoneycounter.settings
 
 class Settings {
+    enum class Modes(val value: String) {
+        BASIC("Basic"),
+        ADVANCED("Advanced")
+    }
+
     companion object {
         val list: Array<Setting> = arrayOf(
             Setting("activeCurrency", "USD"),
-            Setting("mode", "basic")
+            Setting("mode", Settings.Modes.BASIC.value),
+            Setting("confirmReset", "true")
         )
 
         fun getSetting(name: String): Setting? {
