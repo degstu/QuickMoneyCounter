@@ -1,6 +1,8 @@
 package com.degstu.quickmoneycounter
 
+import android.app.Activity
 import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -25,10 +27,23 @@ class CounterActivity : AppCompatActivity() {
         setContentView(R.layout.activity_counter)
 
         buttonReset.setOnClickListener { reset() }
+        buttonSettings.setOnClickListener {
+            val settingsIntent: Intent = Intent(this, SettingsActivity::class.java)
+            startActivityForResult(settingsIntent, 1)
+        }
         buttonUndo.setOnClickListener { undo() }
 
         load()
         constructUI()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                finish()
+                startActivity(intent)
+            }
+        }
     }
 
     private fun calc() {

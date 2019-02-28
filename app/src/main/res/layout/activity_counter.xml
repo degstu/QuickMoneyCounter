@@ -32,20 +32,20 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/buttonReset"
                     android:text="@string/button_reset"
-                    app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
                     android:layout_weight="1"/>
+            <Button
+                    android:text="@string/settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/buttonSettings"
+                    android:layout_weight="1"
+            />
             <Button
                     android:text="@string/button_undo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/buttonUndo"
-                    app:layout_constraintStart_toEndOf="@+id/buttonReset"
-                    app:layout_constraintBottom_toBottomOf="parent" android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-                    android:layout_weight="5"/>
+                    android:layout_weight="15"/>
         </LinearLayout>
     </android.support.constraint.ConstraintLayout>
     <ScrollView
