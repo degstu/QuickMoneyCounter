@@ -6,11 +6,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.InputType
 import android.util.TypedValue
 import android.view.Gravity
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import com.degstu.quickmoneycounter.currency.Currency
 import com.degstu.quickmoneycounter.currency.CurrencyList
 import com.degstu.quickmoneycounter.currency.MoneyPiece
@@ -21,6 +20,7 @@ import java.text.DecimalFormat
 class CounterActivity : AppCompatActivity() {
     private var currency: Currency = Currency("ERR", "ERR", "ERR", arrayOf(), arrayOf(), arrayOf())
     private var mode: String = Settings.Modes.BASIC.value
+    private var advancedModeEditText: MutableMap<MoneyPiece, EditText> = mutableMapOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +51,12 @@ class CounterActivity : AppCompatActivity() {
         val f = DecimalFormat("###,##0.00")
 
         labelTotal.text = currency.masterSymbol + f.format(sum)
+
+        if (mode == Settings.Modes.ADVANCED.value) {
+            for ((m, e) in advancedModeEditText) {
+                e.setText(m.count.toString())
+            }
+        }
     }
 
     private fun reset() {
@@ -87,17 +93,25 @@ class CounterActivity : AppCompatActivity() {
         }
     }
 
-    private fun undo() {
-        val undo: String = currency.undo()
+    private fun undo(uniqueIdentifier: String = "", toast: Boolean = true) {
+        val undo: String = currency.undo(uniqueIdentifier)
 
-        if (undo != "") {
-            toast(resources.getString(R.string.undo_success) + " " + undo)
-        } else {
-            toast(resources.getString(R.string.undo_fail))
+        if (toast) {
+            if (undo != "") {
+                toast(resources.getString(R.string.undo_success) + " " + undo)
+            } else {
+                toast(resources.getString(R.string.undo_fail))
+            }
         }
 
-        currency.write(this)
         calc()
+        currency.write(this)
+    }
+
+    private fun inc(uniqueIdentifier: String) {
+        currency.increment(uniqueIdentifier)
+        calc()
+        currency.write(this)
     }
 
     private fun load() {
@@ -143,29 +157,120 @@ class CounterActivity : AppCompatActivity() {
                 for (i in c.indices) {
                     if (i == MAX_BUTTONS_PER_ROW) newRow()
 
-                    addButton(c[i], currentLayout)
+                    addEntry(c[i], currentLayout)
+                }
+            } else if (mode == Settings.Modes.ADVANCED.value) {
+                for (i in c.indices) {
+                    newRow()
+
+                    addEntry(c[i], currentLayout)
                 }
             }
         }
     }
 
-    private fun addButton(m: MoneyPiece, l: LinearLayout) {
-        val b: Button = Button(this)
-        b.text = m.display
+    private fun addEntry(m: MoneyPiece, l: LinearLayout) {
+        if (mode == Settings.Modes.BASIC.value) {
+            val b = Button(this)
+            b.text = m.display
 
-        val layoutParams =
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-        layoutParams.weight = 1f
-        b.layoutParams = layoutParams
-        b.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12f, resources.displayMetrics)
+            val layoutParams =
+                LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT
+                )
+            layoutParams.weight = 1f
+            b.layoutParams = layoutParams
+            b.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12f, resources.displayMetrics)
 
-        b.setOnClickListener {
-            currency.increment(m.uniqueIdentifier)
-            calc()
-            currency.write(this)
+            b.setOnClickListener {
+                inc(m.uniqueIdentifier)
+            }
+
+            l.addView(b)
+        } else if (mode == Settings.Modes.ADVANCED.value) {
+            val bPlus = Button(this)
+            val bMinus = Button(this)
+            val edit = EditText(this)
+            val label = TextView(this)
+
+            //label
+            run {
+                val layoutParams =
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
+                layoutParams.weight = 1f
+                label.layoutParams = layoutParams
+
+                label.text = m.display
+                label.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 12f, resources.displayMetrics)
+                label.gravity = Gravity.CENTER
+            }
+
+            //text edit
+            run {
+                val layoutParams =
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
+                layoutParams.weight = 1f
+                edit.layoutParams = layoutParams
+                edit.inputType = InputType.TYPE_CLASS_NUMBER
+                edit.gravity = Gravity.CENTER
+                edit.setText(m.count.toString())
+                edit.tag = m.uniqueIdentifier
+
+                //TODO: REMOVE
+                edit.isFocusable = false
+
+                advancedModeEditText.put(m, edit)
+            }
+
+            //button plus
+            run {
+                val layoutParams =
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
+                layoutParams.weight = 1f
+                bPlus.layoutParams = layoutParams
+
+                bPlus.text = resources.getString(R.string.advanced_plus)
+                bPlus.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, resources.displayMetrics)
+
+                bPlus.setOnClickListener {
+                    inc(m.uniqueIdentifier)
+                }
+            }
+
+            //button minus
+            run {
+                val layoutParams =
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
+                layoutParams.weight = 1f
+                bMinus.layoutParams = layoutParams
+
+                bMinus.text = resources.getString(R.string.advanced_minus)
+                bMinus.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, resources.displayMetrics)
+
+                bMinus.setOnClickListener {
+                    undo(m.uniqueIdentifier, false)
+                }
+            }
+
+            //add to layout
+            l.addView(label)
+            l.addView(bMinus)
+            l.addView(edit)
+            l.addView(bPlus)
         }
-
-        l.addView(b)
     }
 
     private fun toast(message: String) {

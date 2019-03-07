@@ -34,18 +34,23 @@ class Currency(
         return sum
     }
 
-    fun undo(): String {
-        return if (opList.isNotEmpty()) {
-            var last = opList.last()
-            increment(opList.last(), false)
-            opList.removeAt(opList.size - 1)
+    fun undo(undoLatestMoneyPiece: String = ""): String {
+        if (opList.isNotEmpty()) {
+            val i = if (undoLatestMoneyPiece == "") opList.size - 1 else opList.lastIndexOf(undoLatestMoneyPiece)
+            if (i == -1) return ""
+
+            increment(opList[i], false)
+
+            val rem = opList[i]
+            opList.removeAt(i)
 
             for (m: MoneyPiece in paperCommon + paperUncommon + coins)
-                if (m.uniqueIdentifier == last)
-                    last = m.display
+                if (m.uniqueIdentifier == rem)
+                    return m.display
 
-            last
-        } else ""
+        }
+
+        return ""
     }
 
     fun load(context: Context) {
@@ -73,18 +78,10 @@ class Currency(
     fun increment(uniqueIdentifier: String, add: Boolean = true) {
         val amount = if (add) 1 else -1
 
-        for (i in paperCommon.indices) if (paperCommon[i].uniqueIdentifier == uniqueIdentifier) {
-            paperCommon[i].count += amount
-        }
-        for (i in paperUncommon.indices) if (paperUncommon[i].uniqueIdentifier == uniqueIdentifier) {
-            paperUncommon[i].count += amount
-        }
-        for (i in coins.indices) if (coins[i].uniqueIdentifier == uniqueIdentifier) {
-            coins[i].count += amount
-        }
+        for (i in paperCommon.indices) if (paperCommon[i].uniqueIdentifier == uniqueIdentifier) paperCommon[i].count += amount
+        for (i in paperUncommon.indices) if (paperUncommon[i].uniqueIdentifier == uniqueIdentifier) paperUncommon[i].count += amount
+        for (i in coins.indices) if (coins[i].uniqueIdentifier == uniqueIdentifier) coins[i].count += amount
 
-        if (add) {
-            opList.add(uniqueIdentifier)
-        }
+        if (add) opList.add(uniqueIdentifier)
     }
 }

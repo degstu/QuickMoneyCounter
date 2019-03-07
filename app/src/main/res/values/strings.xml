@@ -24,4 +24,8 @@
     <string name="settings_mode">Mode</string>
     <string name="settings_confirm_reset">Ask for confirmation on reset</string>
     <string name="settings_about">by Degstu</string>
+
+    <string name="advanced_amount_hint">Amount</string>
+    <string name="advanced_plus">+</string>
+    <string name="advanced_minus">-</string>
 </resources>
