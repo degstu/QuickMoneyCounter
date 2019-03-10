@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QMC</string>
+    <string name="app_name_long">クイックマネーカウンター</string>
+    <string name="button_yes">はい</string>
+    <string name="button_no">いいえ</string>
+    <string name="title_paper_common">紙コモン</string>
+    <string name="title_paper_uncommon">紙レア</string>
+    <string name="title_coin">コイン</string>
+    <string name="button_reset">リセット</string>
+    <string name="confirm_reset_title">リセットを確認</string>
+    <string name="confirm_reset_message">カウントをリセットしてもよろしいですか？</string>
+    <string name="confirm_reset_cancelled">リセットキャンセル</string>
+    <string name="button_undo">元に戻す</string>
+    <string name="undo_success">元に戻す</string>
+    <string name="undo_fail">元に戻すことが残っていません</string>
+    <string name="settings">設定</string>
+    <string name="settings_currency">通貨</string>
+    <string name="settings_mode">モード</string>
+    <string name="settings_confirm_reset">リセット時に確認を求める</string>
+    <string name="settings_about">Degstu製</string>
+    <string name="advanced_amount_hint">量</string>
+    <string name="eula_title">エンドユーザーライセンス契約</string>
+    <string name="eula_checkbox">上記の条件に同意します</string>
+    <string name="eula_decline">低下</string>
+</resources>

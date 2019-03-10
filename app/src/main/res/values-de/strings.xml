@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">QMC</string>
+    <string name="app_name_long">Schneller Geldzähler</string>
+    <string name="button_yes">Ja</string>
+    <string name="button_no">Nein</string>
+    <string name="title_paper_common">Gemeinsames Papier</string>
+    <string name="title_paper_uncommon">Papier ungewöhnlich</string>
+    <string name="title_coin">Münzen</string>
+    <string name="button_reset">Zurücksetzen</string>
+    <string name="confirm_reset_title">Reset bestätigen</string>
+    <string name="confirm_reset_message">Möchten Sie den Zähler wirklich zurücksetzen?</string>
+    <string name="confirm_reset_cancelled">Zurücksetzen abgebrochen</string>
+    <string name="button_undo">Rückgängig machen</string>
+    <string name="undo_success">Undone</string>
+    <string name="undo_fail">Nichts zu widerrufen!</string>
+    <string name="settings">die Einstellungen</string>
+    <string name="settings_currency">Währung</string>
+    <string name="settings_mode">Modus</string>
+    <string name="settings_confirm_reset">Bestätigen Sie beim Rücksetzen die Bestätigung</string>
+    <string name="settings_about">Hergestellt von Degstu</string>
+    <string name="advanced_amount_hint">Menge</string>
+    <string name="eula_title">Endbenutzer-Lizenzvereinbarung</string>
+    <string name="eula_checkbox">Ich stimme den obigen Bedingungen zu</string>
+    <string name="eula_decline">Ablehnen</string>
+</resources>

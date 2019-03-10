@@ -5,7 +5,7 @@
     <string name="button_yes">Yes</string>
     <string name="button_no">No</string>
 
-    <string name="no_money">0.00</string>
+    <string name="no_money" translatable="false">0.00</string>
     <string name="title_paper_common">Paper Common</string>
     <string name="title_paper_uncommon">Paper Uncommon</string>
     <string name="title_coin">Coins</string>
@@ -26,13 +26,14 @@
     <string name="settings_about">by Degstu</string>
 
     <string name="advanced_amount_hint">Amount</string>
-    <string name="advanced_plus">+</string>
-    <string name="advanced_minus">-</string>
+    <string name="advanced_plus" translatable="false">+</string>
+    <string name="advanced_minus" translatable="false">-</string>
 
     <string name="eula_title">End User License Agreement</string>
     <string name="eula_checkbox">I agree to the above terms</string>
     <string name="eula_decline">Decline</string>
-    <string name="eula_text">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+    <string name="eula_text" translatable="false">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+        EXPRESS OR IMPLIED,
         INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
         NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
         LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE

@@ -143,7 +143,7 @@ class CounterActivity : AppCompatActivity() {
     }
 
     private fun constructUI() {
-        val MAX_BUTTONS_PER_ROW: Int = 4
+        val MAX_BUTTONS_PER_ROW = 4
 
         val uiMap: Map<Array<MoneyPiece>, LinearLayout> = mapOf(
             currency.paperCommon to layoutPaperCommonButtons,
@@ -152,7 +152,7 @@ class CounterActivity : AppCompatActivity() {
         )
 
         for ((c, l) in uiMap) {
-            var currentLayout: LinearLayout = LinearLayout(this)
+            var currentLayout = LinearLayout(this)
             fun newRow() {
                 currentLayout = LinearLayout(this)
                 currentLayout.layoutParams = LinearLayout.LayoutParams(
@@ -171,7 +171,7 @@ class CounterActivity : AppCompatActivity() {
                 newRow()
 
                 for (i in c.indices) {
-                    if (i == MAX_BUTTONS_PER_ROW) newRow()
+                    if (i % MAX_BUTTONS_PER_ROW == 0 && i > 0) newRow()
 
                     addEntry(c[i], currentLayout)
                 }
@@ -189,6 +189,7 @@ class CounterActivity : AppCompatActivity() {
         if (mode == Settings.Modes.BASIC.value) {
             val b = Button(this)
             b.text = m.display
+            b.transformationMethod = null
 
             val layoutParams =
                 LinearLayout.LayoutParams(
