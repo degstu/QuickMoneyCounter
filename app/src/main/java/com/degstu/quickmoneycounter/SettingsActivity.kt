@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.RadioButton
 import com.degstu.quickmoneycounter.currency.CurrencyList
 import com.degstu.quickmoneycounter.settings.Settings
 import kotlinx.android.synthetic.main.activity_settings.*
@@ -17,6 +18,7 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
         setResult(Activity.RESULT_OK)
 
+        //currency spinner
         run {
             val clist: CurrencyList = CurrencyList()
             spinnerCurrency.adapter = ArrayAdapter(
@@ -46,33 +48,32 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
 
+        //mode
         run {
             val modeMap: Array<String> = arrayOf(
                 Settings.Modes.BASIC.value,
                 Settings.Modes.ADVANCED.value
             )
-            spinnerMode.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, modeMap)
-            spinnerMode.setSelection(0)
-            val settingsVal: String = Settings.getSetting("mode")!!.loadValue(this)
-            for (i in modeMap.indices) if (modeMap[i] == settingsVal) spinnerMode.setSelection(i)
-            spinnerMode.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    spinnerMode.setSelection(0)
-                    Settings.getSetting("mode")!!.writeValue(
-                        this@SettingsActivity,
-                        Settings.Modes.BASIC.value
-                    )
+
+            for (mode in modeMap) {
+                val rb = RadioButton(this)
+                rb.text = mode
+                rb.setOnClickListener {
+                    Settings.getSetting("mode")!!.writeValue(this, mode)
                 }
 
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    Settings.getSetting("mode")!!.writeValue(
-                        this@SettingsActivity,
-                        modeMap[position]
-                    )
-                }
+                rgMode.addView(rb)
+            }
+
+            rgMode.check(rgMode.getChildAt(1).id)
+
+            for (i in 0 until rgMode.childCount) {
+                if ((rgMode.getChildAt(i) as RadioButton).text == Settings.getSetting("mode")!!.loadValue(this))
+                    rgMode.check(rgMode.getChildAt(i).id)
             }
         }
 
+        //reset confirm
         run {
             checkBoxConfirmReset.isChecked = Settings.getSetting("confirmReset")!!.loadValue(this) != "false"
             checkBoxConfirmReset.setOnClickListener {

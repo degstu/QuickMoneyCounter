@@ -20,7 +20,7 @@ import java.text.DecimalFormat
 class CounterActivity : AppCompatActivity() {
     private var currency: Currency = Currency("ERR", "ERR", "ERR", arrayOf(), arrayOf(), arrayOf())
     private var mode: String = Settings.Modes.BASIC.value
-    private var advancedModeEditText: MutableMap<MoneyPiece, EditText> = mutableMapOf()
+    private var advancedModeEditText: MutableList<EditText> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class CounterActivity : AppCompatActivity() {
         labelTotal.text = currency.masterSymbol + f.format(sum)
 
         if (mode == Settings.Modes.ADVANCED.value) {
-            for ((m, e) in advancedModeEditText) {
+            for ((m, e) in (currency.paperCommon + currency.paperUncommon + currency.coins).zip(advancedModeEditText).toMap()) {
                 e.setText(m.count.toString())
             }
         }
@@ -63,6 +63,7 @@ class CounterActivity : AppCompatActivity() {
         fun r() {
             //load default
             currency = CurrencyList().getCurrency(Settings.getSetting("activeCurrency")!!.loadValue(this))
+
             //write
             currency.write(this)
 
@@ -81,7 +82,12 @@ class CounterActivity : AppCompatActivity() {
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> r()
                     DialogInterface.BUTTON_NEGATIVE -> toast(resources.getString(R.string.confirm_reset_cancelled))
+                    DialogInterface.BUTTON_NEUTRAL -> toast(resources.getString(R.string.confirm_reset_cancelled))
                 }
+            }
+
+            builder.setOnCancelListener {
+                toast(resources.getString(R.string.confirm_reset_cancelled))
             }
 
             builder.setPositiveButton(R.string.button_yes, click)
@@ -226,7 +232,7 @@ class CounterActivity : AppCompatActivity() {
                 //TODO: REMOVE
                 edit.isFocusable = false
 
-                advancedModeEditText.put(m, edit)
+                advancedModeEditText.add(edit)
             }
 
             //button plus
