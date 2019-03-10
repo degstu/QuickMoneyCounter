@@ -26,10 +26,14 @@ class CounterActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_counter)
 
+        if (Settings.getSetting("eula")!!.loadValue(this) != "true") {
+            startActivityForResult(Intent(this, EulaActivity::class.java), 1)
+        }
+
         buttonReset.setOnClickListener { reset() }
         buttonSettings.setOnClickListener {
             val settingsIntent: Intent = Intent(this, SettingsActivity::class.java)
-            startActivityForResult(settingsIntent, 1)
+            startActivityForResult(settingsIntent, 2)
         }
         buttonUndo.setOnClickListener { undo() }
 
@@ -39,7 +43,13 @@ class CounterActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == 1) {
+            if (Settings.getSetting("eula")!!.loadValue(this) != "true") {
+                finish()
+            }
+        }
+        if (requestCode == 2) {
             if (resultCode == Activity.RESULT_OK) {
+                //reload CounterActivity in case the user change the mode in settings
                 finish()
                 startActivity(intent)
             }
@@ -229,7 +239,7 @@ class CounterActivity : AppCompatActivity() {
                 edit.setText(m.count.toString())
                 edit.tag = m.uniqueIdentifier
 
-                //TODO: REMOVE
+                //TODO: REMOVE (make edittext editable), EULA
                 edit.isFocusable = false
 
                 advancedModeEditText.add(edit)

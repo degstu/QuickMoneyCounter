@@ -8,6 +8,7 @@ class Settings {
 
     companion object {
         val list: Array<Setting> = arrayOf(
+            Setting("eula", "false"),
             Setting("activeCurrency", "USD"),
             Setting("mode", Settings.Modes.BASIC.value),
             Setting("confirmReset", "true")
