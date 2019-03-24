@@ -1,14 +1,18 @@
 package com.degstu.quickmoneycounter
 
 import android.app.Activity
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.Gravity
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import com.degstu.quickmoneycounter.currency.Currency
 import com.degstu.quickmoneycounter.currency.CurrencyList
@@ -64,7 +68,9 @@ class CounterActivity : AppCompatActivity() {
 
         if (mode == Settings.Modes.ADVANCED.value) {
             for ((m, e) in (currency.paperCommon + currency.paperUncommon + currency.coins).zip(advancedModeEditText).toMap()) {
-                e.setText(m.count.toString())
+                if (!e.hasFocus()) {
+                    setEditTextText(e, m.count.toString())
+                }
             }
         }
     }
@@ -124,8 +130,8 @@ class CounterActivity : AppCompatActivity() {
         currency.write(this)
     }
 
-    private fun inc(uniqueIdentifier: String) {
-        currency.increment(uniqueIdentifier)
+    private fun inc(uniqueIdentifier: String, add: Boolean = true, opList: Boolean = true) {
+        currency.increment(uniqueIdentifier, add, opList)
         calc()
         currency.write(this)
     }
@@ -137,6 +143,11 @@ class CounterActivity : AppCompatActivity() {
 
         //load mode (not currently in use)
         mode = Settings.getSetting("mode")!!.loadValue(this)
+
+        //disable undo with advanced mode
+        if (mode == Settings.Modes.ADVANCED.value) {
+            buttonUndo.isEnabled = false
+        }
 
         //run calc to set the sum label to 0.00
         calc()
@@ -211,6 +222,12 @@ class CounterActivity : AppCompatActivity() {
             val edit = EditText(this)
             val label = TextView(this)
 
+            fun advButton() {
+                edit.clearFocus()
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(edit.windowToken, 0)
+            }
+
             //label
             run {
                 val layoutParams =
@@ -237,11 +254,36 @@ class CounterActivity : AppCompatActivity() {
                 edit.layoutParams = layoutParams
                 edit.inputType = InputType.TYPE_CLASS_NUMBER
                 edit.gravity = Gravity.CENTER
-                edit.setText(m.count.toString())
+                edit.setSelectAllOnFocus(true)
                 edit.tag = m.uniqueIdentifier
+                setEditTextText(edit, m.count.toString())
 
-                //TODO: REMOVE (make edittext editable), EULA
-                edit.isFocusable = false
+                edit.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        if (!edit.tag.toString().contains("_edit")) {
+                            if (s != null) {
+                                var n = 0
+
+                                try {
+                                    n = s.toString().toInt()
+                                    n = if (n < 0) 0 else n
+
+                                    currency.set(m.uniqueIdentifier, n)
+                                } catch (e: Exception) {
+                                    currency.set(m.uniqueIdentifier, 0)
+                                }
+                            } else {
+                                currency.set(m.uniqueIdentifier, 0)
+                            }
+
+                            calc()
+                            currency.write(this@CounterActivity)
+                        }
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {}
+                })
 
                 advancedModeEditText.add(edit)
             }
@@ -260,7 +302,9 @@ class CounterActivity : AppCompatActivity() {
                 bPlus.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, resources.displayMetrics)
 
                 bPlus.setOnClickListener {
-                    inc(m.uniqueIdentifier)
+                    advButton()
+
+                    inc(m.uniqueIdentifier, add = true, opList = false)
                 }
             }
 
@@ -278,7 +322,9 @@ class CounterActivity : AppCompatActivity() {
                 bMinus.textSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 14f, resources.displayMetrics)
 
                 bMinus.setOnClickListener {
-                    undo(m.uniqueIdentifier, false)
+                    advButton()
+
+                    inc(m.uniqueIdentifier, add = false, opList = false)
                 }
             }
 
@@ -288,6 +334,12 @@ class CounterActivity : AppCompatActivity() {
             l.addView(edit)
             l.addView(bPlus)
         }
+    }
+
+    private fun setEditTextText(e: EditText, text: String) {
+        e.tag = e.tag.toString() + "_edit"
+        e.setText(text)
+        e.tag = e.tag.toString().substring(0, e.tag.toString().indexOf("_edit"))
     }
 
     private fun toast(message: String) {

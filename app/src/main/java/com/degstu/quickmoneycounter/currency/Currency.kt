@@ -75,13 +75,21 @@ class Currency(
         pref.apply()
     }
 
-    fun increment(uniqueIdentifier: String, add: Boolean = true) {
+    fun increment(uniqueIdentifier: String, add: Boolean = true, useOpList: Boolean = true) {
         val amount = if (add) 1 else -1
 
-        for (i in paperCommon.indices) if (paperCommon[i].uniqueIdentifier == uniqueIdentifier) paperCommon[i].count += amount
-        for (i in paperUncommon.indices) if (paperUncommon[i].uniqueIdentifier == uniqueIdentifier) paperUncommon[i].count += amount
-        for (i in coins.indices) if (coins[i].uniqueIdentifier == uniqueIdentifier) coins[i].count += amount
+        for (i in paperCommon.indices) if (paperCommon[i].uniqueIdentifier == uniqueIdentifier) if ((add) || (!add && paperCommon[i].count > 0)) paperCommon[i].count += amount
+        for (i in paperUncommon.indices) if (paperUncommon[i].uniqueIdentifier == uniqueIdentifier) if ((add) || (!add && paperUncommon[i].count > 0)) paperUncommon[i].count += amount
+        for (i in coins.indices) if (coins[i].uniqueIdentifier == uniqueIdentifier) if ((add) || (!add && coins[i].count > 0)) coins[i].count += amount
 
-        if (add) opList.add(uniqueIdentifier)
+        if (add && useOpList) opList.add(uniqueIdentifier)
+    }
+
+    fun set(uniqueIdentifier: String, count: Int) {
+        for (i in paperCommon.indices) if (paperCommon[i].uniqueIdentifier == uniqueIdentifier) paperCommon[i].count =
+            count
+        for (i in paperUncommon.indices) if (paperUncommon[i].uniqueIdentifier == uniqueIdentifier) paperUncommon[i].count =
+            count
+        for (i in coins.indices) if (coins[i].uniqueIdentifier == uniqueIdentifier) coins[i].count = count
     }
 }
